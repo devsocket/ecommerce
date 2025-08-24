@@ -98,5 +98,12 @@ This project is licensed under the MIT License.
 
 Let me know if you want to include example API requests, environment variable setup, or CI/CD instructions. I can tailor it further to your workflow.
 
+----
+## 👤 Author
+Created by: __Venkata Sudheer Kumar Kondeti__
+
+[![GitHub](https://img.shields.io/badge/GitHub-Profile-black?logo=github&style=for-the-badge)](https://github.com/devsocket)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin&style=for-the-badge)](https://linkedin.com/in/sudheer44)
 
 
