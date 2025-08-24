@@ -1,0 +1,39 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: order-service
+
+  spring:
+    datasource:
+      url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/orders}
+      username: ${SPRING_DATASOURCE_USERNAME:admin}
+      password: ${SPRING_DATASOURCE_PASSWORD:passowrd}
+      driver-class-name: org.postgresql.Driver
+    jpa:
+      hibernate:
+        ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+
+  jwt:
+    secret: ${JWT_SECRET:dev_secret_key}
+
+  kafka:
+    bootstrap-servers: kafka:9092
+    topic: topic.v1.orders
+    topic-partitions: 2
+    topic-replication-factor: 1
+    consumer:
+      group-id: order-service-group
+      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+logging:
+  level:
+    root: INFO
+    org.springframework.security: DEBUG
+    com.devsocket.ecommerce.userservice: DEBUG
