@@ -1,3 +1,6 @@
 package com.devsocket.ecommerce.userservice.dto;
 
-public record RegisterRequest(String username, String password) {}
+
+import jakarta.validation.constraints.NotEmpty;
+
+public record RegisterRequest(@NotEmpty String username, @NotEmpty String password) {}
