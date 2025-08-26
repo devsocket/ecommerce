@@ -1,0 +1,47 @@
+name: Build and Deploy to Local Kubernetes
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and Push Docker Image
+        run: |
+          for service in user-service order-service product-service; do
+            docker build -t ghcr.io/${{ github.repository_owner }}/$service:latest ./$service
+            docker push ghcr.io/${{ github.repository_owner }}/$service:latest
+          done
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Configure kubeconfig
+        run: |
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
+
+      - name: Deploy to Kubernetes
+        run: |
+          for manifest in k8s/user-service-deployment.yaml k8s/order-service-deployment.yaml k8s/product-service-deployment.yaml; do
+            kubectl apply -f $manifest
+          done
