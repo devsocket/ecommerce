@@ -3,7 +3,7 @@ name: Build and Deploy to Local Kubernetes
 on:
   push:
     branches:
-      - develop
+      - feature/ci_cd_k8s_support
 
 jobs:
   build-and-deploy:

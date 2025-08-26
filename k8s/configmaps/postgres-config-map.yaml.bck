@@ -8,3 +8,4 @@ data:
     CREATE SCHEMA IF NOT EXISTS "user";
     CREATE SCHEMA IF NOT EXISTS "product";
     CREATE SCHEMA IF NOT EXISTS "order";
+    CREATE SCHEMA IF NOT EXISTS "categories";
