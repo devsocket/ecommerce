@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+data:
+  init.sql: |
+    -- This script creates schemas for each microservice
+    CREATE SCHEMA IF NOT EXISTS "user";
+    CREATE SCHEMA IF NOT EXISTS "product";
+    CREATE SCHEMA IF NOT EXISTS "order";
+    CREATE SCHEMA IF NOT EXISTS "categories";
+
+    CREATE TABLE IF NOT EXISTS product.categories (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(255) NOT NULL
+    );
+  
+    CREATE TABLE IF NOT EXISTS product.products (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      description TEXT,
+      price DOUBLE PRECISION,
+      available_quantity INTEGER
+    );
+    
+    CREATE TABLE IF NOT EXISTS product.product_category (
+      product_id BIGINT NOT NULL,
+      category_id BIGINT NOT NULL,
+      PRIMARY KEY (product_id, category_id),
+      FOREIGN KEY (product_id) REFERENCES product.products(id) ON DELETE CASCADE,
+      FOREIGN KEY (category_id) REFERENCES product.categories(id) ON DELETE CASCADE
+    );
