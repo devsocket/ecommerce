@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+data:
+  init.sql: |
+    -- This script creates schemas for each microservice
+    CREATE SCHEMA IF NOT EXISTS "user";
+    CREATE SCHEMA IF NOT EXISTS "product";
+    CREATE SCHEMA IF NOT EXISTS "order";
