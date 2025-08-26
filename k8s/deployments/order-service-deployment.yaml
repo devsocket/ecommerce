@@ -16,9 +16,11 @@ spec:
         - name: wait-for-postgres
           image: busybox
           command: ['sh', '-c', 'until nc -z postgres 5432; do echo waiting for postgres; sleep 2; done;']
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: order-service
-          image: devsocket/order-service:latest
+          image: ghcr.io/devsocket/order-service:latest
           ports:
             - containerPort: 8085
           env:

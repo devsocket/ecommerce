@@ -31,17 +31,17 @@ jobs:
             docker build -t ghcr.io/${{ github.repository_owner }}/$service:latest ./$service
             docker push ghcr.io/${{ github.repository_owner }}/$service:latest
           done
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'latest'
-
-      - name: Configure kubeconfig
-        run: |
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
-
-      - name: Deploy to Kubernetes
-        run: |
-          for manifest in k8s/user-service-deployment.yaml k8s/order-service-deployment.yaml k8s/product-service-deployment.yaml; do
-            kubectl apply -f $manifest
-          done
+#      - name: Set up kubectl
+#        uses: azure/setup-kubectl@v3
+#        with:
+#          version: 'latest'
+#
+#      - name: Configure kubeconfig
+#        run: |
+#          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
+#
+#      - name: Deploy to Kubernetes
+#        run: |
+#          for manifest in k8s/user-service-deployment.yaml k8s/order-service-deployment.yaml k8s/product-service-deployment.yaml; do
+#            kubectl apply -f $manifest
+#          done
