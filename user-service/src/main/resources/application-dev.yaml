@@ -20,16 +20,24 @@ spring:
   jwt:
     secret: ${JWT_SECRET:dev_secret_key}
 
-#  kafka:
-#    bootstrap-servers: localhost:9092
-#    consumer:
-#      group-id: user-service-group
-#      auto-offset-reset: earliest
+kafka:
+    bootstrap-servers: kafka:9092
+    topic: topic.v1.users
+    topic-partitions: 2
+    topic-replication-factor: 1
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="${EVENT_HUBS_CONNECTION_STRING}";
+      
+    consumer:
+      group-id: user-service-group
+      auto-offset-reset: earliest
 #      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 #      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#    producer:
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 logging:
   level:

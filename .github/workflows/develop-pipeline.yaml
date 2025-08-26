@@ -3,7 +3,7 @@ name: Build and Deploy to Local Kubernetes
 on:
   push:
     branches:
-      - feature/*
+      - 'develop'
 
 jobs:
   build-and-deploy:

@@ -6,9 +6,9 @@ spring:
     name: order-service
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/ecommerce}
-    username: ${SPRING_DATASOURCE_USERNAME:admin}
-    password: ${SPRING_DATASOURCE_PASSWORD:passowrd}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -17,15 +17,18 @@ spring:
       hibernate:
         default_schema: order
 
-
   jwt:
-    secret: ${JWT_SECRET:dev_secret_key}
+    secret: ${JWT_SECRET}
 
   kafka:
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     topic: topic.v1.orders
     topic-partitions: 2
     topic-replication-factor: 1
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="${EVENT_HUBS_CONNECTION_STRING}";
     consumer:
       group-id: order-service-group
       auto-offset-reset: earliest
@@ -38,5 +41,5 @@ spring:
 logging:
   level:
     root: INFO
-    org.springframework.security: DEBUG
-    com.devsocket.ecommerce.userservice: DEBUG
+    org.springframework.security: INFO
+    com.devsocket.ecommerce.orderservice: INFO
