@@ -5,15 +5,18 @@ spring:
   application:
     name: order-service
 
-  spring:
-    datasource:
-      url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/orders}
-      username: ${SPRING_DATASOURCE_USERNAME:admin}
-      password: ${SPRING_DATASOURCE_PASSWORD:passowrd}
-      driver-class-name: org.postgresql.Driver
-    jpa:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/ecommerce}
+    username: ${SPRING_DATASOURCE_USERNAME:admin}
+    password: ${SPRING_DATASOURCE_PASSWORD:passowrd}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    properties:
       hibernate:
-        ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+        default_schema: order
+
 
   jwt:
     secret: ${JWT_SECRET:dev_secret_key}

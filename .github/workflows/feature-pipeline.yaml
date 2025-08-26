@@ -3,7 +3,7 @@ name: Build and Deploy to Local Kubernetes
 on:
   push:
     branches:
-      - develop
+      - feature/*
 
 jobs:
   build-and-deploy:
@@ -22,15 +22,15 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Build and Push Docker Image
-        run: |
-          for service in user-service order-service product-service; do
-            docker build -t ghcr.io/${{ github.repository_owner }}/$service:latest ./$service
-            docker push ghcr.io/${{ github.repository_owner }}/$service:latest
-          done
+#      - name: Log in to GitHub Container Registry
+#        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+#
+#      - name: Build and Push Docker Image
+#        run: |
+#          for service in user-service order-service product-service; do
+#            docker build -t ghcr.io/${{ github.repository_owner }}/$service:latest ./$service
+#            docker push ghcr.io/${{ github.repository_owner }}/$service:latest
+#          done
 #      - name: Set up kubectl
 #        uses: azure/setup-kubectl@v3
 #        with:
