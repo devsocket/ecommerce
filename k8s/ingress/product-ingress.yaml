@@ -2,14 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: product-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
     - host: product.local
       http:
         paths:
-          - path: /
+          - path: /api/v1/products/create
             pathType: Prefix
             backend:
               service:

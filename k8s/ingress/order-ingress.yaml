@@ -5,11 +5,12 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
     - host: order.local
       http:
         paths:
-          - path: /
+          - path: /api/v1/orders
             pathType: Prefix
             backend:
               service:
