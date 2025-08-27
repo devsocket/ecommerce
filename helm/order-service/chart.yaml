@@ -1,0 +1,6 @@
+apiVersion: v2
+name: order-service
+description: A Helm chart for Kubernetes
+type: application # application or library
+version: 0.1.0  # chart version
+appVersion: "1.0" # version of the application

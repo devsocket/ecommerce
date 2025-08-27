@@ -1,0 +1,17 @@
+replicaCount: 2
+image:
+  repository: ghcr.io/devsocket/product-service
+  pullPolicy: IfNotPresent
+  tag: "latest" # Overrides the image tag whose default is the chart appVersion
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8081
+ingress:
+  enabled: true # Enable ingress for the service
+  className: azure/application-gateway  # Specify the ingress class name
+  host: product-service.prod.ecommerce.com
+  path: /api/v1/products
+  pathType: Prefix
+env:
+  SPRING_PROFILES_ACTIVE: prod
