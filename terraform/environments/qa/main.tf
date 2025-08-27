@@ -36,23 +36,24 @@ module "aks" {
 }
 
 module "key_vault" {
-  source = "../../modules/key_vault"
+  source = "../../modules/keyvault"
   resource_group_name = var.resource_group_name
   location            = var.location
   key_vault_name     = var.key_vault_name
 }
 
 module "event_hub" {
-  source = "../../modules/event_hub"
+  source = "../../modules/eventhub"
   resource_group_name = var.resource_group_name
   location            = var.location
   event_hub_namespace_name = var.event_hub_namespace_name
 }
 
 module "postgresql" {
-  source = "../../modules/postgresql"
+  source = "../../modules/postgres"
   resource_group_name = var.resource_group_name
   location            = var.location
+  admin_password = var.db_admin_password
   postgres_name = var.postgres_name
 }
 

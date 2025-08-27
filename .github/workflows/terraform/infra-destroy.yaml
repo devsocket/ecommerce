@@ -1,0 +1,40 @@
+name: Destroy Infrastructure
+
+on:
+  push:
+    branches:
+      - 'destroy/**'
+
+jobs:
+  terraform-destroy:
+    runs-on: ubuntu-latest
+
+    env:
+      TF_VAR_db_admin_password: ${{ secrets.DB_ADMIN_PASSWORD }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Parse environment from branch
+        id: env
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          ENV_NAME="${BRANCH_NAME#destroy/}"
+          echo "env_name=$ENV_NAME" >> $GITHUB_OUTPUT
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform/environments/${{ steps.env.outputs.env_name }}
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -var-file="terraform.tfvars"
+        working-directory: terraform/environments/${{ steps.env.outputs.env_name }}
