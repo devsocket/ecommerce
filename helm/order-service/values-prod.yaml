@@ -1,0 +1,17 @@
+replicaCount: 2
+image:
+  repository: ghcr.io/devsocket/order-service # change to azure acr
+  pullPolicy: IfNotPresent
+  tag: "latest" # Overrides the image tag whose default is the chart appVersion
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8085
+ingress:
+  enabled: true # Enable ingress for the service
+  className: azure/application-gateway  # Specify the ingress class name
+  host: order-service.prod.ecommerce.com
+  path: /api/v1/orders
+  pathType: Prefix
+env:
+  SPRING_PROFILES_ACTIVE: prod

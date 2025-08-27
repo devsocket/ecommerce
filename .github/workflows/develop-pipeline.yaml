@@ -1,4 +1,4 @@
-name: Build and Deploy to Local Kubernetes
+name: develop pipeline clean, package and push to ghcr
 
 on:
   push:

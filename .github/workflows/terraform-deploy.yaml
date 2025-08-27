@@ -1,0 +1,44 @@
+name: Deploy Infrastructure To Azure
+
+on:
+  push:
+    branches:
+      - 'apply/**'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env:
+      TF_VAR_db_admin_password: ${{ secrets.DB_ADMIN_PASSWORD }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Parse environment from branch
+        id: env
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          ENV_NAME="${BRANCH_NAME#apply/}"
+          echo "env_name=$ENV_NAME" >> $GITHUB_OUTPUT
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform/environments/${{ steps.env.outputs.env_name }}
+
+      - name: Terraform Plan
+        run: terraform plan -var-file="terraform.tfvars"
+        working-directory: terraform/environments/${{ steps.env.outputs.env_name }}
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var-file="terraform.tfvars"
+        working-directory: terraform/environments/${{ steps.env.outputs.env_name }}
