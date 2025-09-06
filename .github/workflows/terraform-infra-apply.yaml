@@ -56,3 +56,13 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve -var-file="terraform.tfvars"
         working-directory: terraform/environments/${{ steps.env.outputs.env_name }}
+      - name: Delete apply branch
+        if: startsWith(github.ref, 'refs/heads/apply/')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          echo "Deleting branch: $BRANCH_NAME"
+          gh api \
+            -X DELETE \
+            /repos/${{ github.repository }}/git/refs/heads/$BRANCH_NAME
