@@ -36,14 +36,14 @@ resource "kubernetes_secret" "ghcr_pull" {
   type = "kubernetes.io/dockerconfigjson"
 
   data = {
-    ".dockerconfigjson" = base64encode(jsonencode({
+    ".dockerconfigjson" = jsonencode({
       auths = {
         "ghcr.io" = {
           username = var.ghcr_username
           password = var.ghcr_pat
-          email    = "you@example.com"
+          email    = "venkatasudheerkumar.kondeti@gmail.com"
         }
       }
-    }))
+    })
   }
 }
