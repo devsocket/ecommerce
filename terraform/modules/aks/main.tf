@@ -8,7 +8,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     name       = "default"
     node_count = 1
     vm_size    = "Standard_B2ms"
-    temporary_name_for_rotation = "default-temp"
+    temporary_name_for_rotation = "tmp${substr(var.cluster_name, 0, 8)}"
   }
 
   identity {
