@@ -8,10 +8,10 @@ provider "helm" {
 }
 
 resource "helm_release" "this" {
-  name       = var.release_name
-  chart      = var.helm_chart_path
-  namespace  = var.namespace
-  values     = [file(var.values_file)]
+  name             = var.release_name
+  chart            = "${path.root}/${var.helm_chart_path}"
+  namespace        = var.namespace
+  values           = [file("${path.root}/${var.values_file}")]
   create_namespace = true
-  
+  depends_on = [var.kube_config]  # or module.aks if passed from root
 }

@@ -71,7 +71,7 @@ module "order-service" {
   source = "../../modules/helm-deploy"
   cluster_name = module.aks.cluster_name
   kube_config = module.aks.kube_config
-  helm_chart_path         = "../../helm/order-service"
+  helm_chart_path         = "../../../helm/order-service"
   release_name            = "order-service"
   namespace               = "qa"
   values_file             = "../../../helm/order-service/values-qa.yaml"
@@ -80,7 +80,7 @@ module "user-service" {
   source = "../../modules/helm-deploy"
   cluster_name = module.aks.cluster_name
     kube_config = module.aks.kube_config
-  helm_chart_path         = "../../helm/user-service"
+  helm_chart_path         = "../../../helm/user-service"
   release_name            = "user-service"
   namespace               = "qa"
   values_file             = "../../../helm/user-service/values-qa.yaml"
