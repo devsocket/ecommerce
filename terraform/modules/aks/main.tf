@@ -8,6 +8,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     name       = "default"
     node_count = 1
     vm_size    = "Standard_B2ms"
+    temporary_name_for_rotation = "default-temp"
   }
 
   identity {
@@ -17,13 +18,6 @@ resource "azurerm_kubernetes_cluster" "this" {
   tags = var.tags
 }
 
-# Kubernetes provider using AKS kube_config
-provider "kubernetes" {
-  host                   = azurerm_kubernetes_cluster.this.kube_config[0].host
-  client_certificate     = base64decode(azurerm_kubernetes_cluster.this.kube_config[0].client_certificate)
-  client_key             = base64decode(azurerm_kubernetes_cluster.this.kube_config[0].client_key)
-  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.this.kube_config[0].cluster_ca_certificate)
-}
 
 # GHCR image pull secret
 resource "kubernetes_secret" "ghcr_pull" {
