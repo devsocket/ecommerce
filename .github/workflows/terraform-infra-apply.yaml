@@ -16,6 +16,9 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      TF_VAR_ghcr_username: ${{ secrets.GHCR_USERNAME }}
+      TF_VAR_ghcr_pat: ${{ secrets.AKS_GHCR_PAT }}
+
 
     steps:
       - name: Checkout code
@@ -32,14 +35,17 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+          # client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          # tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          # subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Show current subscription
         run: az account show --output json
 
       - name: Register Microsoft.Storage provider
-        run: az provider register --namespace Microsoft.Storage
+        run: |
+          az provider register --namespace Microsoft.Storage
 
-      - name: Provision backend resources
+      - name: Povision backend resources
         run: |
           az group create --name "ecommerce-qa-rg" --location "centralus" || true
           az storage account create --name "qatfstateaccount" --resource-group "ecommerce-qa-rg" --location "centralus" --sku Standard_LRS || true
@@ -59,29 +65,6 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve -var-file="terraform.tfvars"
         working-directory: terraform/environments/${{ steps.env.outputs.env_name }}
-
-      - name: Extract AKS info from Terraform outputs
-        id: aks
-        run: |
-          echo "cluster_name=$(terraform output -raw cluster_name)" >> $GITHUB_OUTPUT
-          echo "resource_group=$(terraform output -raw resource_group_name)" >> $GITHUB_OUTPUT
-        working-directory: terraform/environments/${{ steps.env.outputs.env_name }}
-
-      - name: Set AKS context
-        uses: azure/aks-set-context@v3
-        with:
-          resource-group: ${{ steps.aks.outputs.resource_group }}
-          cluster-name: ${{ steps.aks.outputs.cluster_name }}
-
-      - name: Create GHCR image pull secret
-        run: |
-          kubectl get secret ghcr-secret --namespace=default || \
-          kubectl create secret docker-registry ghcr-secret \
-            --docker-server=ghcr.io \
-            --docker-username=${{ secrets.GHCR_USERNAME }} \
-            --docker-password=${{ secrets.AKS_GHCR_PAT }} \
-            --docker-email=venkatasudheerkumar.kondeti@gmail.com \
-            --namespace=default
 
       - name: Delete apply branch
         if: startsWith(github.ref, 'refs/heads/apply/')
