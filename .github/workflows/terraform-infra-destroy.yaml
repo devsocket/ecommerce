@@ -8,6 +8,7 @@ on:
 jobs:
   terraform-destroy:
     runs-on: ubuntu-latest
+    if: contains(fromJson('["devsocket"]'), github.actor)
 
     env:
       TF_VAR_db_admin_password: ${{ secrets.DB_ADMIN_PASSWORD }}
