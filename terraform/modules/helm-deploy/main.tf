@@ -14,4 +14,10 @@ resource "helm_release" "this" {
   values           = [file("${path.root}/${var.values_file}")]
   create_namespace = true
   depends_on = [var.kube_config]  # or module.aks if passed from root
+
+  # Add these:
+  replace          = true              # ensures install if not present
+  atomic           = true              # rollback on failure
+  cleanup_on_fail  = true              # removes failed release
+
 }
