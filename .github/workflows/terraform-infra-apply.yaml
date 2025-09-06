@@ -36,6 +36,9 @@ jobs:
           # client-id: ${{ secrets.AZURE_CLIENT_ID }}
           # tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           # subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Show current subscription
+        run: az account show --output json
+
       - name: Register Microsoft.Storage provider
         run: |
           az provider register --namespace Microsoft.Storage
@@ -50,7 +53,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -reconfigure
         working-directory: terraform/environments/${{ steps.env.outputs.env_name }}
 
       - name: Terraform Plan
