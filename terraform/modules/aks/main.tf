@@ -18,6 +18,13 @@ resource "azurerm_kubernetes_cluster" "this" {
   tags = var.tags
 }
 
+# Kubernetes provider using AKS kube_config
+provider "kubernetes" {
+  host                   = azurerm_kubernetes_cluster.this.kube_config[0].host
+  client_certificate     = base64decode(azurerm_kubernetes_cluster.this.kube_config[0].client_certificate)
+  client_key             = base64decode(azurerm_kubernetes_cluster.this.kube_config[0].client_key)
+  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.this.kube_config[0].cluster_ca_certificate)
+}
 
 # GHCR image pull secret
 resource "kubernetes_secret" "ghcr_pull" {
