@@ -63,8 +63,8 @@ module "product-service" {
   kube_config = module.aks.kube_config
   namespace = "qa"
   release_name = "product-service"
-  helm_chart_path = "../../helm/product-service"
-    values_file = "../../helm/product-service/values-qa.yaml"
+  helm_chart_path = "../../../helm/product-service"
+    values_file = "../../../helm/product-service/values-qa.yaml"
 }
 
 module "order-service" {
@@ -74,7 +74,7 @@ module "order-service" {
   helm_chart_path         = "../../helm/order-service"
   release_name            = "order-service"
   namespace               = "qa"
-  values_file             = "../../helm/order-service/values-qa.yaml"
+  values_file             = "../../../helm/order-service/values-qa.yaml"
 }
 module "user-service" {
   source = "../../modules/helm-deploy"
@@ -83,5 +83,5 @@ module "user-service" {
   helm_chart_path         = "../../helm/user-service"
   release_name            = "user-service"
   namespace               = "qa"
-  values_file             = "../../helm/user-service/values-qa.yaml"
+  values_file             = "../../../helm/user-service/values-qa.yaml"
 }
