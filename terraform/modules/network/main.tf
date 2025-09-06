@@ -22,7 +22,7 @@ resource "azurerm_network_security_group" "aks_nsg" {
     name                = "${var.vnet_name}-aks-nsg"
     location            = var.location
     resource_group_name = var.resource_group_name
-    security_rule = {
+    security_rule {
         name                       = "AllowKubeAPI"
         priority                   = 100
         direction                  = "Inbound"
