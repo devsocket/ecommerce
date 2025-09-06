@@ -33,6 +33,9 @@ module "aks" {
   resource_group_name = var.resource_group_name
   location            = var.location
   cluster_name        = var.cluster_name
+
+  ghcr_username       = var.ghcr_username
+  ghcr_pat            = var.ghcr_pat
 }
 
 module "key_vault" {
