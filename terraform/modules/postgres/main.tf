@@ -4,7 +4,7 @@ resource "azurerm_postgresql_flexible_server" "this" {
   resource_group_name = var.resource_group_name
   administrator_login = "adminuser"
   administrator_password = var.admin_password
-  sku_name           = "Standard_B1ms"
+  sku_name           = "B_Standard_B1ms"
   version            = "13"
   storage_mb        = 32768
   backup_retention_days = 7
