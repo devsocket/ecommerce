@@ -27,7 +27,7 @@ jobs:
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           ENV_NAME="${BRANCH_NAME#apply/}"
-          echo "env_name=$ENV_NAME" >> $GITHUB_OUTPUT
+          echo "env_name=$ENV_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Azure Login
         uses: azure/login@v1
@@ -36,9 +36,8 @@ jobs:
           # client-id: ${{ secrets.AZURE_CLIENT_ID }}
           # tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           # subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
+      - name: Povision backend resources
         run: |
-        #   az account set --subscription "a6d4bb1c-5386-4a9a-af52-ef605eeea0b0"
           az group create --name "ecommerce-qa-rg" --location "East US" || true
           az storage account create --name "qatfstateaccount" --resource-group "ecommerce-qa-rg" --location "East US" --sku Standard_LRS || true
           az storage container create --name "qatfstate" --account-name "qatfstateaccount" || true
