@@ -1,5 +1,5 @@
 resource_group_name = "ecommerce-qa-rg"
-location            = "East US 2"
+location            = "canadacentral"
 cluster_name        = "ecommerce-qa-aks"
 key_vault_name = "ecommerce-qa-kv"
 event_hub_namespace_name = "ecommerce-qa-eh"
